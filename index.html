@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Price Optimization ML App - Complete Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-bg: #0f172a;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main {
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Quick Start Section */
+        .quick-start {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .steps {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+        }
+
+        /* Architecture Section */
+        .architecture-diagram {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .layer {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            font-weight: 500;
+        }
+
+        .layer.frontend {
+            background: var(--gradient-secondary);
+        }
+
+        .layer.api {
+            background: var(--gradient-accent);
+        }
+
+        .layer.business {
+            background: var(--gradient-primary);
+        }
+
+        .layer.data {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* API Documentation */
+        .api-endpoint {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .method {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .method.post {
+            background: var(--primary-color);
+        }
+
+        /* Requirements Section */
+        .requirements {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .requirement-item:last-child {
+            border-bottom: none;
+        }
+
+        .requirement-icon {
+            color: var(--success-color);
+            font-size: 1.25rem;
+        }
+
+        /* Troubleshooting */
+        .troubleshoot-item {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .troubleshoot-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .troubleshoot-solution {
+            color: #78350f;
+            font-size: 0.875rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-bg);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.125rem;
+            }
+
+            .badges {
+                justify-content: center;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">
+                <i class="fas fa-gas-pump"></i>
+                <span>Fuel ML Optimizer</span>
+            </div>
+            <button class="nav-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#overview" class="nav-link">Overview</a></li>
+                <li><a href="#quick-start" class="nav-link">Quick Start</a></li>
+                <li><a href="#architecture" class="nav-link">Architecture</a></li>
+                <li><a href="#api" class="nav-link">API Docs</a></li>
+                <li><a href="#troubleshoot" class="nav-link">Help</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container animate-fade-in">
+            <h1><i class="fas fa-chart-line"></i> Fuel Price Optimization</h1>
+            <p>An intelligent machine learning system that optimizes daily fuel prices to maximize profit while respecting business constraints</p>
+            
+            <div class="badges">
+                <span class="badge"><i class="fab fa-python"></i> Python 3.8+</span>
+                <span class="badge"><i class="fas fa-rocket"></i> FastAPI 0.115.0</span>
+                <span class="badge"><i class="fas fa-chart-bar"></i> Streamlit 1.39.0</span>
+                <span class="badge"><i class="fas fa-brain"></i> scikit-learn 1.3.2</span>
+                <span class="badge"><i class="fas fa-check-circle"></i> Production Ready</span>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="#quick-start" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Get Started
+                </a>
+                <a href="#architecture" class="btn btn-secondary">
+                    <i class="fas fa-code"></i> View Architecture
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Overview Section -->
+        <section id="overview" class="section">
+            <div class="container">
+                <h2 class="section-title">🚀 Project Overview</h2>
+                <p class="section-subtitle">A complete ML-based solution for intelligent fuel pricing optimization</p>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fas fa-target"></i></div>
+                            <div class="card-title">Problem Statement</div>
+                            <div class="card-description">Optimize daily fuel prices to maximize profit</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Balance between high profit margins and sales volume while considering competitor prices and market dynamics.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fas fa-brain"></i></div>
+                            <div class="card-title">ML Solution</div>
+                            <div class="card-description">Random Forest Regression Model</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Predicts fuel demand volume based on pricing, competitor analysis, and historical patterns.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fas fa-calculator"></i></div>
+                            <div class="card-title">Optimization</div>
+                            <div class="card-description">Profit Maximization Algorithm</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Generates optimal price recommendations within business constraints and market conditions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="feature-title">Demand Prediction</div>
+                        <div class="feature-description">ML-powered volume forecasting</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="feature-title">Business Constraints</div>
+                        <div class="feature-description">Configurable pricing guardrails</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-users"></i></div>
+                        <div class="feature-title">Competitor Analysis</div>
+                        <div class="feature-description">Market positioning insights</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="feature-title">User-Friendly UI</div>
+                        <div class="feature-description">Streamlit dashboard</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-api"></i></div>
+                        <div class="feature-title">REST API</div>
+                        <div class="feature-description">FastAPI backend service</div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon"><i class="fas fa-cog"></i></div>
+                        <div class="feature-title">Real-time Processing</div>
+                        <div class="feature-description">Instant price recommendations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Start Section -->
+        <section id="quick-start" class="section">
+            <div class="container">
+                <h2 class="section-title">⚡ Quick Start Guide</h2>
+                <p class="section-subtitle">Get your fuel pricing optimization system running in minutes</p>
+
+                <div class="quick-start">
+                    <h3><i class="fas fa-list-check"></i> Prerequisites</h3>
+                    <div class="requirements">
+                        <div class="requirement-item">
+                            <div class="requirement-icon"><i class="fas fa-check"></i></div>
+                            <div>
+                                <strong>Python 3.8 or higher</strong>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Check: <code>python --version</code></div>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon"><i class="fas fa-check"></i></div>
+                            <div>
+                                <strong>pip package manager</strong>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Usually comes with Python</div>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon"><i class="fas fa-check"></i></div>
+                            <div>
+                                <strong>Git (optional)</strong>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">For cloning the repository</div>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon"><i class="fas fa-check"></i></div>
+                            <div>
+                                <strong>4GB+ RAM</strong>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">For ML model training</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">📁 Navigate to Project Directory</div>
+                            <div class="step-description">Open terminal and navigate to the project folder</div>
+                            <div class="code-block">cd /path/to/fuel_pricing_ml_app</div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">🐍 Create Virtual Environment</div>
+                            <div class="step-description">Set up an isolated Python environment</div>
+                            <div class="code-block">python -m venv fuel_pricing_ml_app_venv</div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">⚡ Activate Virtual Environment</div>
+                            <div class="step-description">Activate the environment (commands vary by OS)</div>
+                            <div class="code-block"># Linux/macOS:
+source fuel_pricing_ml_app_venv/bin/activate
+
+# Windows:
+fuel_pricing_ml_app_venv\Scripts\activate</div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">📦 Install Dependencies</div>
+                            <div class="step-description">Install all required Python packages</div>
+                            <div class="code-block">pip install -r requirements.txt</div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <div class="step-title">🚀 Start Backend Server</div>
+                            <div class="step-description">Launch the FastAPI backend service</div>
+                            <div class="code-block">cd backend
+uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload</div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <div class="step-title">🎨 Start Frontend (New Terminal)</div>
+                            <div class="step-description">Launch the Streamlit dashboard in a separate terminal</div>
+                            <div class="code-block">cd frontend
+streamlit run streamlit_app.py</div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <div class="step-title">🌐 Access Applications</div>
+                            <div class="step-description">Open your web browser and navigate to the applications</div>
+                            <div class="code-block"># Streamlit UI:
+http://localhost:8501
+
+# FastAPI Backend:
+http://localhost:8001
+
+# API Documentation:
+http://localhost:8001/docs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="architecture" class="section">
+            <div class="container">
+                <h2 class="section-title">🏗️ System Architecture</h2>
+                <p class="section-subtitle">Understanding the complete application structure</p>
+
+                <div class="architecture-diagram">
+                    <h3><i class="fas fa-sitemap"></i> Component Architecture</h3>
+                    <div style="margin: 2rem 0;">
+                        <div class="layer frontend">
+                            <strong>🌐 Frontend Layer - Streamlit (Port 8501)</strong><br>
+                            Interactive UI • Model Training • Price Dashboard • Visualization
+                        </div>
+                        <div style="margin: 1rem 0; color: var(--text-secondary);">
+                            <i class="fas fa-arrows-alt-v"></i> HTTP REST API Communication
+                        </div>
+                        <div class="layer api">
+                            <strong>🚀 API Service Layer - FastAPI (Port 8001)</strong><br>
+                            /train • /recommend_price • /health • Auto Documentation
+                        </div>
+                        <div style="margin: 1rem 0; color: var(--text-secondary);">
+                            <i class="fas fa-arrows-alt-v"></i> Function Calls
+                        </div>
+                        <div class="layer business">
+                            <strong>🤖 Business Logic Layer</strong><br>
+                            Data Pipeline • ML Service • Price Optimizer • Feature Engineering
+                        </div>
+                        <div style="margin: 1rem 0; color: var(--text-secondary);">
+                            <i class="fas fa-arrows-alt-v"></i> File I/O Operations
+                        </div>
+                        <div class="layer data">
+                            <strong>💾 Data Storage Layer</strong><br>
+                            Raw CSV Data • Trained Models • Application Logs • Configurations
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fas fa-database"></i></div>
+                            <div class="card-title">Data Pipeline</div>
+                            <div class="card-description">ETL and Feature Engineering</div>
+                        </div>
+                        <div class="card-body">
+                            <ul style="list-style: none; padding: 0;">
+                                <li><i class="fas fa-check text-success"></i> CSV Data Loading</li>
+                                <li><i class="fas fa-check text-success"></i> Data Validation</li>
+                                <li><i class="fas fa-check text-success"></i> Feature Engineering</li>
+                                <li><i class="fas fa-check text-success"></i> Train/Test Split</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fas fa-brain"></i></div>
+                            <div class="card-title">ML Service</div>
+                            <div class="card-description">Model Training & Inference</div>
+                        </div>
+                        <div class="card-body">
+                            <ul style="list-style: none; padding: 0;">
+                                <li><i class="fas fa-check text-success"></i> Random Forest Training</li>
+                                <li><i class="fas fa-check text-success"></i> Model Persistence</li>
+                                <li><i class="fas fa-check text-success"></i> Prediction Service</li>
+                                <li><i class="fas fa-check text-success"></i> Performance Metrics</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fas fa-calculator"></i></div>
+                            <div class="card-title">Price Optimizer</div>
+                            <div class="card-description">Profit Maximization Engine</div>
+                        </div>
+                        <div class="card-body">
+                            <ul style="list-style: none; padding: 0;">
+                                <li><i class="fas fa-check text-success"></i> Constraint Application</li>
+                                <li><i class="fas fa-check text-success"></i> Candidate Generation</li>
+                                <li><i class="fas fa-check text-success"></i> Profit Calculation</li>
+                                <li><i class="fas fa-check text-success"></i> Optimal Selection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Documentation -->
+        <section id="api" class="section">
+            <div class="container">
+                <h2 class="section-title">📊 API Documentation</h2>
+                <p class="section-subtitle">Complete REST API reference for integration</p>
+
+                <div class="api-endpoint">
+                    <h3><span class="method">GET</span> /health</h3>
+                    <p><strong>Purpose:</strong> System health check and status validation</p>
+                    <div class="code-block">{
+  "status": "ok",
+  "timestamp": "2024-11-11T10:30:00Z"
+}</div>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3><span class="method post">POST</span> /train</h3>
+                    <p><strong>Purpose:</strong> Train the ML model with latest data</p>
+                    <p><strong>Response:</strong></p>
+                    <div class="code-block">{
+  "r2": 0.89,
+  "rmse": 650.2,
+  "mae": 480.5,
+  "n_samples": 730
+}</div>
+                </div>
+
+                <div class="api-endpoint">
+                    <h3><span class="method post">POST</span> /recommend_price</h3>
+                    <p><strong>Purpose:</strong> Get optimal price recommendation</p>
+                    <p><strong>Request Body:</strong></p>
+                    <div class="code-block">{
+  "date": "2024-11-11",
+  "price": 94.50,
+  "cost": 86.20,
+  "comp1_price": 95.10,
+  "comp2_price": 94.80,
+  "comp3_price": 95.30
+}</div>
+                    <p><strong>Response:</strong></p>
+                    <div class="code-block">{
+  "recommended_price": 94.85,
+  "expected_volume": 12680,
+  "expected_profit": 109682.00,
+  "model_r2": 0.89,
+  "candidates": [...]
+}</div>
+                </div>
+
+                <div class="quick-start">
+                    <h3><i class="fas fa-globe"></i> Access Points</h3>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon"><i class="fas fa-desktop"></i></div>
+                                <div class="card-title">Streamlit Dashboard</div>
+                                <div class="card-description">Main User Interface</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="code-block">http://localhost:8501</div>
+                                <p>Interactive web application for model training and price recommendations</p>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                                <div class="card-title">FastAPI Backend</div>
+                                <div class="card-description">REST API Service</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="code-block">http://localhost:8001</div>
+                                <p>Backend API service for programmatic access and integration</p>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon"><i class="fas fa-book"></i></div>
+                                <div class="card-title">API Documentation</div>
+                                <div class="card-description">Interactive API Docs</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="code-block">http://localhost:8001/docs</div>
+                                <p>Swagger UI with interactive API testing capabilities</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section id="troubleshoot" class="section">
+            <div class="container">
+                <h2 class="section-title">🔧 Troubleshooting Guide</h2>
+                <p class="section-subtitle">Common issues and their solutions</p>
+
+                <div class="troubleshoot-item">
+                    <div class="troubleshoot-title">🐍 Python Version Issues</div>
+                    <div class="troubleshoot-solution">
+                        <strong>Problem:</strong> "Python command not found" or version too old<br>
+                        <strong>Solution:</strong> Install Python 3.8+ from python.org or use pyenv for version management
+                        <div class="code-block"># Check Python version
+python --version
+python3 --version
+
+# If using python3
+python3 -m venv fuel_pricing_ml_app_venv</div>
+                    </div>
+                </div>
+
+                <div class="troubleshoot-item">
+                    <div class="troubleshoot-title">📦 Package Installation Failures</div>
+                    <div class="troubleshoot-solution">
+                        <strong>Problem:</strong> pip install errors or missing dependencies<br>
+                        <strong>Solution:</strong> Upgrade pip and use virtual environment
+                        <div class="code-block"># Upgrade pip
+python -m pip install --upgrade pip
+
+# Install in virtual environment
+source fuel_pricing_ml_app_venv/bin/activate
+pip install -r requirements.txt</div>
+                    </div>
+                </div>
+
+                <div class="troubleshoot-item">
+                    <div class="troubleshoot-title">🌐 Port Already in Use</div>
+                    <div class="troubleshoot-solution">
+                        <strong>Problem:</strong> "Port 8001 or 8501 already in use"<br>
+                        <strong>Solution:</strong> Use different ports or stop conflicting processes
+                        <div class="code-block"># Use different port for FastAPI
+uvicorn app.main:app --host 0.0.0.0 --port 8002
+
+# Use different port for Streamlit
+streamlit run streamlit_app.py --server.port 8502</div>
+                    </div>
+                </div>
+
+                <div class="troubleshoot-item">
+                    <div class="troubleshoot-title">🧠 Model Training Errors</div>
+                    <div class="troubleshoot-solution">
+                        <strong>Problem:</strong> Model training fails or data file not found<br>
+                        <strong>Solution:</strong> Ensure data files exist and check file paths
+                        <div class="code-block"># Check if data file exists
+ls backend/data/raw/oil_retail_history.csv
+
+# Verify working directory
+pwd</div>
+                    </div>
+                </div>
+
+                <div class="troubleshoot-item">
+                    <div class="troubleshoot-title">🔗 API Connection Issues</div>
+                    <div class="troubleshoot-solution">
+                        <strong>Problem:</strong> Streamlit cannot connect to FastAPI backend<br>
+                        <strong>Solution:</strong> Ensure both services are running and check URLs
+                        <div class="code-block"># Check if FastAPI is running
+curl http://localhost:8001/health
+
+# Check Streamlit configuration in streamlit_app.py
+# Ensure API_BASE_URL is correct</div>
+                    </div>
+                </div>
+
+                <div class="quick-start">
+                    <h3><i class="fas fa-life-ring"></i> Getting Help</h3>
+                    <div class="features-grid">
+                        <div class="feature">
+                            <div class="feature-icon"><i class="fas fa-bug"></i></div>
+                            <div class="feature-title">Check Logs</div>
+                            <div class="feature-description">Review console output for error messages</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
+                            <div class="feature-title">Documentation</div>
+                            <div class="feature-description">Reference this guide and API docs</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon"><i class="fas fa-tools"></i></div>
+                            <div class="feature-title">Environment</div>
+                            <div class="feature-description">Verify Python and package versions</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon"><i class="fas fa-question-circle"></i></div>
+                            <div class="feature-title">Support</div>
+                            <div class="feature-description">Contact development team for assistance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-title">
+                    <i class="fas fa-gas-pump"></i> Fuel Price Optimization ML App
+                </div>
+                <p>An intelligent machine learning system for data-driven fuel pricing decisions</p>
+                
+                <div class="footer-links">
+                    <a href="#overview" class="footer-link">Overview</a>
+                    <a href="#quick-start" class="footer-link">Quick Start</a>
+                    <a href="#architecture" class="footer-link">Architecture</a>
+                    <a href="#api" class="footer-link">API Docs</a>
+                    <a href="#troubleshoot" class="footer-link">Help</a>
+                </div>
+                
+                <p style="margin-top: 2rem; color: #64748b;">
+                    Built with ❤️ for data-driven business decisions • 
+                    <span id="currentYear"></span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('navMenu').classList.remove('active');
+                }
+            });
+        });
+
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Add fade-in animation to elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and major elements
+        document.querySelectorAll('.card, .feature, .step, .api-endpoint').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const nav = document.querySelector('.nav');
+            const navMenu = document.getElementById('navMenu');
+            const navToggle = document.querySelector('.nav-toggle');
+            
+            if (!nav.contains(e.target) && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Add active nav link highlighting
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,477 @@
+# Fuel Pricing ML App - Comprehensive .gitignore
+
+# ================================
+# Python
+# ================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.coverage/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff
+instance/
+.webassets-cache
+
+# Scrapy stuff
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# ================================
+# Virtual Environments
+# ================================
+
+# Virtual environment directories
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+fuel_pricing_ml_app_venv/
+.venv/
+.env/
+
+# Python virtual environment files
+pyvenv.cfg
+pip-selfcheck.json
+
+# ================================
+# Machine Learning & Data
+# ================================
+
+# Model files
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.pb
+*.onnx
+*.tflite
+
+# Large model files (uncomment if you want to track specific models)
+# !backend/data/models/demand_model.pkl
+# !backend/data/models/feature_config.json
+
+# Data files (uncomment specific files you want to track)
+*.csv
+*.json
+*.xlsx
+*.xls
+*.parquet
+*.feather
+
+# Keep specific data files if needed
+!backend/data/raw/oil_retail_history.csv
+!backend/data/models/feature_config.json
+
+# Processed data directories
+backend/data/processed/*
+!backend/data/processed/.gitkeep
+
+# Temporary data files
+*.tmp
+*.temp
+*_temp.*
+*_backup.*
+
+# ================================
+# Logs and Monitoring
+# ================================
+
+# Application logs
+*.log
+*.out
+*.err
+logs/
+backend/logs/*
+!backend/logs/.gitkeep
+frontend/logs/*
+!frontend/logs/.gitkeep
+
+# Log files
+*.log.*
+*.log.gz
+*.log.bz2
+
+# ================================
+# Environment and Configuration
+# ================================
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.environment
+
+# Configuration files with sensitive data
+config/secrets.json
+config/production.json
+secrets.json
+settings.json
+local_settings.py
+
+# Database URLs and API keys
+database.ini
+api_keys.txt
+credentials.json
+
+# ================================
+# FastAPI Specific
+# ================================
+
+# FastAPI generated files
+.pytest_cache/
+
+# Alembic migration files (if using database)
+alembic/versions/*
+!alembic/versions/.gitkeep
+
+# ================================
+# Streamlit Specific
+# ================================
+
+# Streamlit cache
+.streamlit/
+streamlit_cache/
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# ================================
+# Development Tools
+# ================================
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+
+# ================================
+# Operating System
+# ================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ================================
+# Docker & Containers
+# ================================
+
+# Docker files (uncomment if not using Docker)
+# Dockerfile
+# docker-compose.yml
+# .dockerignore
+
+# Docker volumes and data
+docker-data/
+.docker/
+
+# ================================
+# Cloud & Deployment
+# ================================
+
+# AWS
+.aws/
+*.pem
+
+# Google Cloud
+.gcloud/
+*-key.json
+service-account.json
+
+# Azure
+.azure/
+
+# Heroku
+*.herokuapp.com
+
+# ================================
+# Testing and CI/CD
+# ================================
+
+# Testing artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+test-reports/
+.tox/
+
+# GitHub Actions
+.github/workflows/*.yml
+!.github/workflows/ci.yml
+
+# Jenkins
+Jenkinsfile
+
+# ================================
+# Documentation
+# ================================
+
+# Generated documentation
+docs/_build/
+docs/build/
+site/
+
+# Sphinx
+docs/_static/
+docs/_templates/
+
+# ================================
+# Temporary and Cache Files
+# ================================
+
+# General temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+*.rej
+
+# Cache directories
+.cache/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+
+# Temporary directories
+tmp/
+temp/
+
+# ================================
+# Package managers
+# ================================
+
+# npm (if using any Node.js tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Conda
+.conda/
+
+# ================================
+# SSL Certificates
+# ================================
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+
+# ================================
+# Backup files
+# ================================
+
+# Backup files
+*.backup
+*.bak
+*.old
+*~
+
+# Database backups
+*.sql.gz
+*.dump
+
+# ================================
+# Specific to this project
+# ================================
+
+# Model training artifacts
+training_logs/
+model_checkpoints/
+tensorboard_logs/
+
+# Performance monitoring
+performance_metrics/
+monitoring_data/
+
+# Custom cache directories
+custom_cache/
+user_data/
+
+# Sensitive business data
+business_data/
+confidential/
+
+# Experiments and notebooks
+experiments/
+notebooks/
+*.ipynb
+
+# Custom configuration
+custom_config.json
+local_config.yaml
+
+# ================================
+# Keep important empty directories
+# ================================
+
+# Use .gitkeep files to track empty directories
+!.gitkeep
+
+# ================================
+# End of .gitignore
+# ================================
